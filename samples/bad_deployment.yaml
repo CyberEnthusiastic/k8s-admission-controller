@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insecure-api
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: insecure-api
+  template:
+    metadata:
+      labels:
+        app: insecure-api
+    spec:
+      containers:
+        - name: api
+          image: mycorp/api:latest
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: password

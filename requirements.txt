@@ -1,0 +1,4 @@
+# Kubernetes Admission Controller core has zero runtime deps (uses bundled yaml_mini).
+# Optional: install PyYAML for a more complete YAML parser and Flask for --serve webhook mode.
+# PyYAML>=6.0
+# Flask>=3.0

@@ -1,0 +1,88 @@
+============================================================
+  Kubernetes Admission Controller v1.0
+============================================================
+[*] Total findings: 22
+[*] Breakdown     : {'CRITICAL': 3, 'HIGH': 5, 'MEDIUM': 11, 'LOW': 3}
+
+[CRITICAL] Privileged container (privileged: true)
+   samples\bad_privileged_pod.yaml Pod/evil-privileged-pod container=app (risk=74.4, CIS K8s 5.2.1)
+   > securityContext.privileged=true
+
+[CRITICAL] Host namespace sharing (hostNetwork/hostPID/hostIPC=true)
+   samples\bad_privileged_pod.yaml Pod/evil-privileged-pod container= (risk=73.8, CIS K8s 5.2.2-5.2.4)
+   > Pod uses host namespaces: hostNetwork, hostPID
+
+[CRITICAL] Docker socket / host path mounted
+   samples\bad_privileged_pod.yaml Pod/evil-privileged-pod container= (risk=73.8, CIS K8s 5.7.1)
+   > volume 'docker-sock' hostPath=/var/run/docker.sock
+
+[HIGH] Dangerous capability (NET_ADMIN, SYS_ADMIN, SYS_PTRACE, etc.)
+   samples\bad_privileged_pod.yaml Pod/evil-privileged-pod container=app (risk=65.0, CIS K8s 5.2.9)
+   > capabilities.add: ['SYS_ADMIN', 'NET_ADMIN']
+
+[HIGH] allowPrivilegeEscalation != false
+   samples\bad_deployment.yaml Deployment/insecure-api container=api (risk=63.2, CIS K8s 5.2.5)
+   > allowPrivilegeEscalation=unset
+
+[HIGH] allowPrivilegeEscalation != false
+   samples\bad_privileged_pod.yaml Pod/evil-privileged-pod container=app (risk=63.2, CIS K8s 5.2.5)
+   > allowPrivilegeEscalation=True
+
+[HIGH] Running as root (runAsUser=0 or runAsNonRoot unset)
+   samples\bad_deployment.yaml Deployment/insecure-api container=api (risk=62.0, CIS K8s 5.2.6)
+   > runAsUser=None, runAsNonRoot=None
+
+[HIGH] Running as root (runAsUser=0 or runAsNonRoot unset)
+   samples\bad_privileged_pod.yaml Pod/evil-privileged-pod container=app (risk=62.0, CIS K8s 5.2.6)
+   > runAsUser=0, runAsNonRoot=None
+
+[MEDIUM] Image tag is 'latest' or missing (non-immutable)
+   samples\bad_deployment.yaml Deployment/insecure-api container=api (risk=55.8, CIS K8s 5.7.4)
+   > image='mycorp/api:latest'
+
+[MEDIUM] Image tag is 'latest' or missing (non-immutable)
+   samples\bad_privileged_pod.yaml Pod/evil-privileged-pod container=app (risk=55.8, CIS K8s 5.7.4)
+   > image='alpine:latest'
+
+[MEDIUM] Capabilities not dropped (drop: [ALL] missing)
+   samples\bad_deployment.yaml Deployment/insecure-api container=api (risk=54.0, CIS K8s 5.2.9)
+   > capabilities.drop=[]
+
+[MEDIUM] Writable root filesystem (readOnlyRootFilesystem != true)
+   samples\bad_deployment.yaml Deployment/insecure-api container=api (risk=54.0, CIS K8s 5.2.10)
+   > readOnlyRootFilesystem=unset
+
+[MEDIUM] Capabilities not dropped (drop: [ALL] missing)
+   samples\bad_privileged_pod.yaml Pod/evil-privileged-pod container=app (risk=54.0, CIS K8s 5.2.9)
+   > capabilities.drop=[]
+
+[MEDIUM] Writable root filesystem (readOnlyRootFilesystem != true)
+   samples\bad_privileged_pod.yaml Pod/evil-privileged-pod container=app (risk=54.0, CIS K8s 5.2.10)
+   > readOnlyRootFilesystem=unset
+
+[MEDIUM] No resource limits (DoS risk)
+   samples\bad_deployment.yaml Deployment/insecure-api container=api (risk=51.0, CIS K8s 5.7.2)
+   > resources.limits={}
+
+[MEDIUM] No resource limits (DoS risk)
+   samples\bad_privileged_pod.yaml Pod/evil-privileged-pod container=app (risk=51.0, CIS K8s 5.7.2)
+   > resources.limits={}
+
+[MEDIUM] Default ServiceAccount used (or automountServiceAccountToken=true)
+   samples\bad_deployment.yaml Deployment/insecure-api container= (risk=48.0, CIS K8s 5.1.5)
+   > serviceAccountName=default
+
+[MEDIUM] Image from untrusted registry (no docker.io/quay.io/ghcr.io/gcr.io)
+   samples\bad_deployment.yaml Deployment/insecure-api container=api (risk=48.0, Best practice)
+   > image registry not in trusted list: 'mycorp/api:latest'
+
+[MEDIUM] Default ServiceAccount used (or automountServiceAccountToken=true)
+   samples\bad_privileged_pod.yaml Pod/evil-privileged-pod container= (risk=48.0, CIS K8s 5.1.5)
+   > serviceAccountName=default
+
+[LOW] No liveness/readiness probe defined
+   samples\bad_deployment.yaml Deployment/insecure-api container=api (risk=42.0, Best practice)
+   > no liveness or readiness probe
+
+[*] JSON report: reports/k8s_report.json
+[*] HTML report: reports/k8s_report.html
